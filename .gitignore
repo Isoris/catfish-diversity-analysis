@@ -1,0 +1,96 @@
+# =============================================================================
+# .gitignore — analysis repository (LANTA HPC + local)
+# =============================================================================
+
+# ── HPC artefacts that must NEVER be committed ───────────────────────────────
+*.bam
+*.bam.bai
+*.cram
+*.cram.crai
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.vcf
+*.vcf.gz
+*.vcf.gz.tbi
+*.bcf
+*.bcf.csi
+*.pestPG
+*.thetas.idx
+*.thetas.gz
+*.saf.idx
+*.saf.gz
+*.saf.pos.gz
+*.beagle.gz
+*.mafs.gz
+*.arg
+*.idx
+*.bgen
+*.bgen.bgi
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.RDS
+*.rds
+*.rdata
+*.RData
+
+# Tabular intermediates (commit summaries to docs/ instead)
+*.tsv.gz
+*.csv.gz
+
+# SLURM logs
+slurm-*.out
+slurm-*.err
+*.slurm.out
+*.slurm.err
+logs/
+**/logs/
+
+# Conda / mamba envs (commit the env YAML, not the env)
+envs/*/
+!envs/*.yml
+!envs/*.yaml
+
+# ── Build / language detritus ───────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# ── Editor / OS ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# ── Scratch / sandbox ───────────────────────────────────────────────────────
+scratch/
+sandbox/
+tmp/
+tmp_*/
+*.tmp
+
+# ── Allow specific exceptions ───────────────────────────────────────────────
+# Small, hand-curated reference files committed deliberately:
+!docs/data/*.tsv
+!docs/data/*.csv
+!tests/data/*.tsv
+!tests/data/*.csv
