@@ -12,9 +12,7 @@
 #   bash launchers/LAUNCH_module3.sh --step 2 --slurm   # Submit step 2 as SLURM array
 # =============================================================================
 set -euo pipefail
-STEPS="$(cd "$(dirname "$0")/../steps" && pwd)"
-SLURM_DIR="$(cd "$(dirname "$0")/../slurm" && pwd)"
-UTILS="$(cd "$(dirname "$0")/../utils" && pwd)"
+ROOT="$(cd "$(dirname "$0")" && pwd)"
 
 STEP=""
 FROM=1
@@ -42,7 +40,7 @@ run_step() {
 
 # ── Step 1: Prepare inputs ──────────────────────────────────────────────
 run_step 1 "Prepare and validate inputs" \
-  bash "${STEPS}/STEP_A01_prep_inputs.sh"
+  bash "${ROOT}/STEP_A01_prep_inputs.sh"
 
 # ── Step 2: Per-sample heterozygosity ───────────────────────────────────
 if [[ "${USE_SLURM}" == true && ("${STEP}" == "2" || -z "${STEP}") ]]; then
@@ -50,10 +48,10 @@ if [[ "${USE_SLURM}" == true && ("${STEP}" == "2" || -z "${STEP}") ]]; then
   echo "================================================================"
   echo "  STEP 2: Per-sample heterozygosity (SLURM array)"
   echo "================================================================"
-  source "$(dirname "$0")/../00_module3_config.sh"
+  source "${ROOT}/00_config.sh"
   N=$(wc -l < "${SAMPLE_LIST}")
   echo "Submitting SLURM array for ${N} samples..."
-  sbatch --array=1-${N} "${SLURM_DIR}/SLURM_A02_heterozygosity_worker.sh"
+  sbatch --array=1-${N} "${ROOT}/SLURM_A02_heterozygosity_worker.sh"
   echo "Submitted. Wait for completion before running step 3."
   if [[ -z "${STEP}" ]]; then
     echo "Stopping sequential run. Re-run with --from 3 after SLURM completes."
@@ -61,20 +59,20 @@ if [[ "${USE_SLURM}" == true && ("${STEP}" == "2" || -z "${STEP}") ]]; then
   fi
 else
   run_step 2 "Per-sample heterozygosity (sequential)" \
-    bash "${STEPS}/STEP_A02_run_heterozygosity.sh"
+    bash "${ROOT}/STEP_A02_run_heterozygosity.sh"
 fi
 
 # ── Step 3: ngsF-HMM ──────────────────────────────────────────────────
 run_step 3 "ngsF-HMM (multi-replicate)" \
-  bash "${STEPS}/STEP_A03_run_ngsF_HMM.sh"
+  bash "${ROOT}/STEP_A03_run_ngsF_HMM.sh"
 
 # ── Step 4: Parse ROH + het in/out ROH ────────────────────────────────
 run_step 4 "Parse ROH, compute FROH, het in/out ROH" \
-  bash "${STEPS}/STEP_A04_parse_roh_and_het.sh"
+  bash "${ROOT}/STEP_A04_parse_roh_and_het.sh"
 
 # ── Step 5: Plots + stats + report ───────────────────────────────────
 run_step 5 "Generate all plots, statistics, and report" \
-  bash "${STEPS}/STEP_B01_run_all_plots.sh"
+  bash "${ROOT}/STEP_B01_run_all_plots.sh"
 
 echo ""
 echo "================================================================"

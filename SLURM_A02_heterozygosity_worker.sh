@@ -14,8 +14,8 @@
 #   sbatch --array=1-${N} 02_run_heterozygosity_slurm.sh
 # =============================================================================
 set -euo pipefail
-MODULE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-source "${MODULE_ROOT}/00_module3_config.sh"
+MODULE_ROOT="$(cd "$(dirname "$0")" && pwd)"
+source "${MODULE_ROOT}/00_config.sh"
 
 # Get the sample for this array task
 SAMPLE=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "${SAMPLE_LIST}")
@@ -28,4 +28,4 @@ fi
 hr_log "SLURM array task ${SLURM_ARRAY_TASK_ID}: processing ${SAMPLE}"
 
 # Run the main heterozygosity script for this single sample
-bash "${MODULE_ROOT}/steps/STEP_A02_run_heterozygosity.sh" "${SAMPLE}"
+bash "${MODULE_ROOT}/STEP_A02_run_heterozygosity.sh" "${SAMPLE}"

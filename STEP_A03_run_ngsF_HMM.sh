@@ -9,9 +9,8 @@
 #   bash 03_run_ngsF_HMM.sh 20    # override number of replicates
 # =============================================================================
 set -euo pipefail
-STEPS="$(cd "$(dirname "$0")" && pwd)"
-UTILS="$(cd "$(dirname "$0")/../utils" && pwd)"
-source "$(cd "$(dirname "$0")/.." && pwd)/00_module3_config.sh"
+UTILS="$(cd "$(dirname "$0")/utils" && pwd)"
+source "$(cd "$(dirname "$0")" && pwd)/00_config.sh"
 hr_init_dirs
 
 # ── Load required modules ──────────────────────────────────────────────────

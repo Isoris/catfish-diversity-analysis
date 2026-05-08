@@ -39,25 +39,32 @@ downstream — a consumer can take any one without needing the others.
 - [`angsd_fixed_HWE`](https://github.com/Isoris/angsd_fixed_HWE) — patched
   ANGSD with fixed-F EM, used where standard HWE-based MAF estimation is
   inappropriate
-- bcftools roh / PLINK (system) — ROH calling
+- ngsF-HMM — ROH calling on genotype likelihoods
 
 ## Layout
 
 ```text
 catfish-diversity-analysis/
-├── 00_config.sh                  root config
-├── Modules/
-│   ├── 01_het_theta_pi/          per-sample SAF → SFS → genome-wide H
-│   │                             + windowed θπ (main + multiscale)
-│   └── 02_roh/                   ngsF-HMM ROH + F_ROH + H in/out ROH
-├── launchers/
-│   ├── LAUNCH_module3.sh         orchestrates 01 → 02 sequentially or via SLURM
-│   ├── STEP_B01_run_all_plots.sh aggregates plots across both modules
-│   └── write_report.py           auto-generated Methods/Results markdown
-├── envs/
-├── docs/
-│   └── methods/
-└── README.md
+├── 00_config.sh                         single source of truth
+├── LAUNCH.sh                            master runner
+├── STEP_A01_prep_inputs.sh              validate inputs, build BAM list
+├── STEP_A02_run_heterozygosity.sh       per-sample SAF → SFS → H + windowed θπ
+├── SLURM_A02_heterozygosity_worker.sh   SLURM array worker (one sample/task)
+├── STEP_A03_run_ngsF_HMM.sh             ngsF-HMM (10 reps × seeds 42–51)
+├── STEP_A04_parse_roh_and_het.sh        .ibd → BED → F_ROH + H in/out ROH
+├── STEP_B01_run_all_plots.sh            plots + stats + report
+├── write_report.py                      auto-generated Methods/Results
+├── utils/                               R/Python helpers
+└── docs/methods/                        manuscript prose + θπ scaling note
+```
+
+## Usage
+
+```bash
+bash LAUNCH.sh                   # everything sequentially
+bash LAUNCH.sh --step 2          # only step 2
+bash LAUNCH.sh --from 3          # from step 3 onward
+bash LAUNCH.sh --step 2 --slurm  # step 2 as SLURM array (226 tasks)
 ```
 
 ## Output contracts (what downstream consumers can rely on)
@@ -84,14 +91,13 @@ diversity-comparable estimate, not the raw pestPG `tP` window sum. See
 ## Status
 
 Pipelines from the legacy `MODULE_3_heterozygosity_roh/` tree have been
-landed under `Modules/01_het_theta_pi/` (heterozygosity + θπ; they share
-the SAF→SFS pipeline) and `Modules/02_roh/` (ngsF-HMM, F_ROH). Top-level
-launcher and plot orchestrator live in `launchers/`. Scripts run as-is on
-LANTA — no logic was rewritten in the move, only re-homed.
+landed flat at the repo root: `STEP_A01..A04` for compute, `STEP_B01` for
+plots, `LAUNCH.sh` to orchestrate, `utils/` for helpers. Scripts run as-is
+on LANTA — no logic was rewritten in the move, only re-homed.
 
-The pestPG `tP / nSites` per-site adapter promised by `03_theta_pi`'s
-output contract is still a TODO inside `01_het_theta_pi` — current
-emissions are raw pestPG. See `docs/methods/theta_pi_scaling.md`.
+The per-site `tP / nSites` adapter for the θπ output contract is still a
+TODO — current emissions are raw pestPG. See
+`docs/methods/theta_pi_scaling.md`.
 
 ## Citation
 

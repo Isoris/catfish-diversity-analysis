@@ -3,9 +3,8 @@
 # 05_run_all_plots.sh — Run all ROH module plots + statistics + report
 # =============================================================================
 set -euo pipefail
-STEPS="$(cd "$(dirname "$0")" && pwd)"
-UTILS="$(cd "$(dirname "$0")/../utils" && pwd)"
-source "$(cd "$(dirname "$0")/.." && pwd)/00_module3_config.sh"
+UTILS="$(cd "$(dirname "$0")/utils" && pwd)"
+source "$(cd "$(dirname "$0")" && pwd)/00_config.sh"
 hr_init_dirs
 
 hr_log "=== Step 05: Run all plots and statistics ==="

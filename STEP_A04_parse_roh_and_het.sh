@@ -3,9 +3,8 @@
 # 04_parse_roh_and_het.sh — Wrapper to run the ROH parsing pipeline
 # =============================================================================
 set -euo pipefail
-STEPS="$(cd "$(dirname "$0")" && pwd)"
-UTILS="$(cd "$(dirname "$0")/../utils" && pwd)"
-source "$(cd "$(dirname "$0")/.." && pwd)/00_module3_config.sh"
+UTILS="$(cd "$(dirname "$0")/utils" && pwd)"
+source "$(cd "$(dirname "$0")" && pwd)/00_config.sh"
 hr_init_dirs
 
 hr_log "=== Step 04: Parse ROH + compute het in/out ROH ==="
