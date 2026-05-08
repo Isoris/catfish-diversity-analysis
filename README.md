@@ -11,19 +11,18 @@ papers on this cohort.
 
 ## What this repo produces
 
-Per-sample summaries of genetic diversity, callable-site-aware:
+Three independently-consumable result buckets. With these three, ~50% of
+standard genetic-diversity and conservation analyses downstream can be
+run without any further pipeline code:
 
-| Output | Description |
-|---|---|
-| Per-sample SAF (folded) | from ANGSD `-doSaf 1 -fold 1` |
-| Per-sample θπ (pestPG, multi-scale) | window/step grid: 10 kb / 2 kb default |
-| Per-sample heterozygosity (genome-wide + per-LG) | from per-sample SFS |
-| Per-(sample, window) θπ matrix (TSV) | tidy long format, one row per (sample, window) |
-| ROH calls per sample | bcftools/PLINK ROH on biSNP set |
-| F<sub>ROH</sub> + diversity-contextualized F<sub>ROH</sub>|H | named framework from the manuscript |
+| Bucket | Granularity | Description |
+|---|---|---|
+| **Heterozygosity** | per-sample, genome-wide | One H per individual from a per-sample folded SFS (ANGSD `-doSaf 1 -fold 1` → realSFS). The per-sample primitive for inbreeding metrics, conservation summaries, and Table 1. |
+| **θπ (pestPG)** | cohort-level, windowed, multi-scale | Per-window θπ at multiple physical scales (default main 500 kb; multiscale set 5 kb/1 kb, 10 kb/2 kb, 50 kb/10 kb). The local-diversity primitive for selection scans, inversion-region contrast, and the inversion-atlas page-12 enrichment. |
+| **ROH / F_ROH** | per-sample, regional + summary | ngsF-HMM ROH calls (10 reps × seeds 42–51, best-by-likelihood), parsed to BED, with F_ROH genome-wide and per-LG, length bins (short/medium/long), and H inside vs. outside ROH. The autozygosity primitive for inbreeding analysis and the F_ROH&#124;H framework. |
 
-The per-(sample, window) θπ matrix is the input that `inversion-atlas`
-consumes for its page-12 θπ enrichment.
+The buckets share inputs (BAMs, callable mask) but are independent
+downstream — a consumer can take any one without needing the others.
 
 ## Inputs (consumed from sibling repos)
 

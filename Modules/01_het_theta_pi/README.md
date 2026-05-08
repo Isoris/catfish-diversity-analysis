@@ -22,9 +22,25 @@ the top-level launcher (`launchers/LAUNCH_module3.sh --step 2 --slurm`).
 
 ## Outputs
 
-- `${OUT_HETEROZYGOSITY}/` — per-sample SAF, SFS, genome-wide H summary table
-- `${OUT_THETA_PI}/` — windowed θπ at the main scale (default 500 kb) plus
-  the multiscale set (`THETA_SCALES` in `00_config.sh`)
+This module emits **two of the three independently-consumable result
+buckets** for downstream conservation/diversity analysis:
+
+- **Heterozygosity bucket** — `${OUT_HETEROZYGOSITY}/`
+  Per-sample, genome-wide. One scalar H per sample plus the underlying
+  per-sample SAF/SFS. Consumed by ROH analysis (H in/out ROH), inbreeding
+  metrics, manuscript Table 1, and any downstream conservation summary
+  that needs a single H value per individual.
+
+- **θπ bucket** — `${OUT_THETA_PI}/`
+  Cohort-level, windowed, **multi-scale**. Default main scale 500 kb;
+  multiscale set defined by `THETA_SCALES` in `00_config.sh` (5 kb/1 kb,
+  10 kb/2 kb, 50 kb/10 kb). Consumed by inversion-atlas page-12
+  enrichment, local diversity ideograms, and any per-region θπ test
+  (selection scans, inversion-region contrast).
+
+The two buckets share the SAF→SFS pipeline upstream but are independent
+from there: a downstream consumer can take either without needing the
+other.
 
 ## θπ scaling caveat
 

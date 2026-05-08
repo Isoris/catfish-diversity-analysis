@@ -21,10 +21,23 @@ BEAGLE GLs + .pos + samples.ind   (from population-analysis)
 
 ## Outputs
 
-- `${OUT_ROH}/per_sample/<SAMPLE>.roh.bed` — ROH intervals per sample
-- `${OUT_ROH}/F_ROH.tsv` — F_ROH genome-wide and per-LG
-- `${OUT_ROH}/het_in_out_roh.tsv` — H contrast inside vs. outside ROH
-- ROH length bins: short (<1 Mb), medium (1–5 Mb), long (>5 Mb)
+This module emits the **third of the three independently-consumable
+result buckets**:
+
+- **ROH bucket** — `${OUT_ROH}/`
+  - `per_sample/<SAMPLE>.roh.bed` — ROH intervals per sample
+  - `F_ROH.tsv` — F_ROH genome-wide and per-LG
+  - `het_in_out_roh.tsv` — H contrast inside vs. outside ROH
+  - ROH length bins: short (<1 Mb, ancestral), medium (1–5 Mb, historical),
+    long (>5 Mb, recent inbreeding / consanguinity)
+
+Consumed by inbreeding/conservation summaries, founder-pack analysis,
+manuscript Results section on autozygosity, and the F_ROH|H framework.
+
+This bucket can be produced and consumed independently of the
+heterozygosity and θπ buckets — but the per-sample H from
+`01_het_theta_pi` is needed if you want H in/out ROH, and the ngsF-HMM
+input requires the BEAGLE GLs from the population-analysis sibling.
 
 ## Plots (called from `launchers/STEP_B01_run_all_plots.sh`)
 
