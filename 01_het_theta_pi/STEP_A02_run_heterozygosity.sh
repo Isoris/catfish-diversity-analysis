@@ -11,8 +11,8 @@
 #   bash 02_run_heterozygosity.sh CGA009       # run one sample only
 # =============================================================================
 set -euo pipefail
-UTILS="$(cd "$(dirname "$0")/utils" && pwd)"
-source "$(cd "$(dirname "$0")" && pwd)/00_config.sh"
+UTILS="$(cd "$(dirname "$0")/../utils" && pwd)"
+source "$(cd "$(dirname "$0")/.." && pwd)/00_config.sh"
 hr_init_dirs
 
 SINGLE_SAMPLE="${1:-}"

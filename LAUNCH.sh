@@ -40,7 +40,7 @@ run_step() {
 
 # ── Step 1: Prepare inputs ──────────────────────────────────────────────
 run_step 1 "Prepare and validate inputs" \
-  bash "${ROOT}/STEP_A01_prep_inputs.sh"
+  bash "${ROOT}/01_het_theta_pi/STEP_A01_prep_inputs.sh"
 
 # ── Step 2: Per-sample heterozygosity ───────────────────────────────────
 if [[ "${USE_SLURM}" == true && ("${STEP}" == "2" || -z "${STEP}") ]]; then
@@ -51,7 +51,7 @@ if [[ "${USE_SLURM}" == true && ("${STEP}" == "2" || -z "${STEP}") ]]; then
   source "${ROOT}/00_config.sh"
   N=$(wc -l < "${SAMPLE_LIST}")
   echo "Submitting SLURM array for ${N} samples..."
-  sbatch --array=1-${N} "${ROOT}/SLURM_A02_heterozygosity_worker.sh"
+  sbatch --array=1-${N} "${ROOT}/01_het_theta_pi/SLURM_A02_heterozygosity_worker.sh"
   echo "Submitted. Wait for completion before running step 3."
   if [[ -z "${STEP}" ]]; then
     echo "Stopping sequential run. Re-run with --from 3 after SLURM completes."
@@ -59,16 +59,16 @@ if [[ "${USE_SLURM}" == true && ("${STEP}" == "2" || -z "${STEP}") ]]; then
   fi
 else
   run_step 2 "Per-sample heterozygosity (sequential)" \
-    bash "${ROOT}/STEP_A02_run_heterozygosity.sh"
+    bash "${ROOT}/01_het_theta_pi/STEP_A02_run_heterozygosity.sh"
 fi
 
 # ── Step 3: ngsF-HMM ──────────────────────────────────────────────────
 run_step 3 "ngsF-HMM (multi-replicate)" \
-  bash "${ROOT}/STEP_A03_run_ngsF_HMM.sh"
+  bash "${ROOT}/02_roh/STEP_A03_run_ngsF_HMM.sh"
 
 # ── Step 4: Parse ROH + het in/out ROH ────────────────────────────────
 run_step 4 "Parse ROH, compute FROH, het in/out ROH" \
-  bash "${ROOT}/STEP_A04_parse_roh_and_het.sh"
+  bash "${ROOT}/02_roh/STEP_A04_parse_roh_and_het.sh"
 
 # ── Step 5: Plots + stats + report ───────────────────────────────────
 run_step 5 "Generate all plots, statistics, and report" \
