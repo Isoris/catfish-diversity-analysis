@@ -48,16 +48,16 @@ consumes for its page-12 θπ enrichment.
 catfish-diversity-analysis/
 ├── 00_config.sh                  root config
 ├── Modules/
-│   ├── 01_saf_per_sample/        per-sample folded SAF
-│   ├── 02_heterozygosity/        per-sample SFS → genome-wide H
-│   ├── 03_theta_pi/              pestPG multi-scale + per-(sample,window) TSV
-│   ├── 04_roh/                   ROH on biSNP Beagle GLs
-│   └── 05_aggregated/            tidy matrices for downstream consumers
+│   ├── 01_het_theta_pi/          per-sample SAF → SFS → genome-wide H
+│   │                             + windowed θπ (main + multiscale)
+│   └── 02_roh/                   ngsF-HMM ROH + F_ROH + H in/out ROH
+├── launchers/
+│   ├── LAUNCH_module3.sh         orchestrates 01 → 02 sequentially or via SLURM
+│   ├── STEP_B01_run_all_plots.sh aggregates plots across both modules
+│   └── write_report.py           auto-generated Methods/Results markdown
 ├── envs/
 ├── docs/
-│   ├── module_contracts/
 │   └── methods/
-├── tests/
 └── README.md
 ```
 
@@ -84,10 +84,15 @@ diversity-comparable estimate, not the raw pestPG `tP` window sum. See
 
 ## Status
 
-Scaffold. Pipelines exist and have been run on LANTA but live outside any
-git repo today (under `${BASE}/het_roh/`). They will be migrated into
-`Modules/` over time, one module at a time, as part of the manuscript-prep
-cleanup.
+Pipelines from the legacy `MODULE_3_heterozygosity_roh/` tree have been
+landed under `Modules/01_het_theta_pi/` (heterozygosity + θπ; they share
+the SAF→SFS pipeline) and `Modules/02_roh/` (ngsF-HMM, F_ROH). Top-level
+launcher and plot orchestrator live in `launchers/`. Scripts run as-is on
+LANTA — no logic was rewritten in the move, only re-homed.
+
+The pestPG `tP / nSites` per-site adapter promised by `03_theta_pi`'s
+output contract is still a TODO inside `01_het_theta_pi` — current
+emissions are raw pestPG. See `docs/methods/theta_pi_scaling.md`.
 
 ## Citation
 
