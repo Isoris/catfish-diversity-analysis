@@ -68,14 +68,14 @@ code can rescale or flag.
 ```
 inversion_candidates.tsv  +  karyotype_calls.tsv  +  manifest
   │
-  └─ STEP_PI01_make_karyotype_group_theta_pi.sh    per-inversion driver
+  └─ STEP_PI_B_make_karyotype_group_theta_pi.sh    per-inversion driver
        │
-       ├─ scripts/make_karyotype_bamlists.R         build Homo_1/Homo_2/Het BAM lists
-       ├─ ANGSD on Homo_1 ∪ Homo_2                  shared 4-col sites file
-       ├─ ANGSD per band with -doMajorMinor 3       per-band MAFs on shared sites
-       ├─ scripts/compute_pi11_pi22_pi12.R          sitewise + windowed π
-       ├─ scripts/average_sample_pestPG_by_karyotype.R   optional mean tP by band
-       └─ scripts/plot_band_pi_panel.R              two-panel PDF
+       ├─ STEP_PI_C_make_karyotype_bamlists.R          build Homo_1/Homo_2/Het BAM lists
+       ├─ ANGSD on Homo_1 ∪ Homo_2                     shared 4-col sites file
+       ├─ ANGSD per band with -doMajorMinor 3          per-band MAFs on shared sites
+       ├─ STEP_PI_D_compute_pi11_pi22_pi12.R           sitewise + windowed π
+       ├─ STEP_PI_E_average_sample_pestPG_by_karyotype.R   optional mean tP by band
+       └─ STEP_PI_F_plot_band_pi_panel.R               two-panel PDF
 ```
 
 ## Inputs
@@ -152,10 +152,10 @@ under `mean_tP/`, not `pi_curves/`, deliberately.
 
 ```bash
 # All inversions in INV_CANDIDATES
-bash 03_pi_inversion_karyotype/STEP_PI01_make_karyotype_group_theta_pi.sh
+bash 03_pi_inversion_karyotype/STEP_PI_B_make_karyotype_group_theta_pi.sh
 
 # A subset
-bash 03_pi_inversion_karyotype/STEP_PI01_make_karyotype_group_theta_pi.sh INV01 INV03
+bash 03_pi_inversion_karyotype/STEP_PI_B_make_karyotype_group_theta_pi.sh INV01 INV03
 ```
 
 ## Cohort scope

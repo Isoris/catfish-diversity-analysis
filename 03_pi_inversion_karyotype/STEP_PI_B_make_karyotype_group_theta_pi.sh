@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# STEP_PI01_make_karyotype_group_theta_pi.sh
+# STEP_PI_B_make_karyotype_group_theta_pi.sh
 # =============================================================================
 # Per-inversion band-level nucleotide diversity / divergence:
 #
@@ -21,8 +21,8 @@
 # group as "mean_per_sample_tP" (this is *not* group pi; label accordingly).
 #
 # Usage:
-#   bash STEP_PI01_make_karyotype_group_theta_pi.sh                  # all inversions
-#   bash STEP_PI01_make_karyotype_group_theta_pi.sh INV01 INV03      # subset
+#   bash STEP_PI_B_make_karyotype_group_theta_pi.sh                  # all inversions
+#   bash STEP_PI_B_make_karyotype_group_theta_pi.sh INV01 INV03      # subset
 # =============================================================================
 set -euo pipefail
 
@@ -57,7 +57,7 @@ mkdir -p "${OUT_BANDPI}/bamlists" \
 
 LOG_PI="${OUT_BANDPI}/logs"
 
-hr_log "=== STEP_PI01: Karyotype-band nucleotide diversity (pi11/pi22/pi12) ==="
+hr_log "=== STEP_PI_B: Karyotype-band nucleotide diversity (pi11/pi22/pi12) ==="
 hr_log "Inversion candidates : ${INV_CANDIDATES}"
 hr_log "Karyotype calls      : ${KARYOTYPE_CALLS}"
 hr_log "pestPG dir (optional): ${PESTPG_DIR}"
@@ -101,7 +101,7 @@ inv_in_filter() {
 
     # ── 1. Build per-band bamlists from karyotype + manifest ────────────────
     hr_log "  [1/8] Build bamlists"
-    "${RSCRIPT_BIN}" "${MODDIR}/scripts/make_karyotype_bamlists.R" \
+    "${RSCRIPT_BIN}" "${MODDIR}/STEP_PI_C_make_karyotype_bamlists.R" \
       --karyotype  "${KARYOTYPE_CALLS}" \
       --manifest   "${SAMPLE_MANIFEST}" \
       --inversion  "${INV}" \
@@ -195,7 +195,7 @@ inv_in_filter() {
 
     # ── 7. Compute pi11/pi22/pi12 in R ─────────────────────────────────────
     hr_log "  [5/8] Compute pi11 / pi22 / pi12"
-    "${RSCRIPT_BIN}" "${MODDIR}/scripts/compute_pi11_pi22_pi12.R" \
+    "${RSCRIPT_BIN}" "${MODDIR}/STEP_PI_D_compute_pi11_pi22_pi12.R" \
       --homo1        "${INV_OUT}/allele_freq/${INV}.Homo_1.mafs.gz" \
       --homo2        "${INV_OUT}/allele_freq/${INV}.Homo_2.mafs.gz" \
       --inv          "${INV}" \
@@ -212,7 +212,7 @@ inv_in_filter() {
     # ── 8. Optional: average per-sample pestPG by band ──────────────────────
     if [[ -d "${PESTPG_DIR}" ]]; then
       hr_log "  [6/8] Average per-sample pestPG by karyotype band"
-      "${RSCRIPT_BIN}" "${MODDIR}/scripts/average_sample_pestPG_by_karyotype.R" \
+      "${RSCRIPT_BIN}" "${MODDIR}/STEP_PI_E_average_sample_pestPG_by_karyotype.R" \
         --karyotype  "${KARYOTYPE_CALLS}" \
         --pestpg-dir "${PESTPG_DIR}" \
         --inversion  "${INV}" \
@@ -228,7 +228,7 @@ inv_in_filter() {
 
     # ── 9. Two-panel plot ───────────────────────────────────────────────────
     hr_log "  [7/8] Plot band pi panel"
-    "${RSCRIPT_BIN}" "${MODDIR}/scripts/plot_band_pi_panel.R" \
+    "${RSCRIPT_BIN}" "${MODDIR}/STEP_PI_F_plot_band_pi_panel.R" \
       --inv         "${INV}" \
       --chr         "${CHR}" \
       --start       "${START}" \
@@ -243,5 +243,5 @@ inv_in_filter() {
   done
 } < "${INV_CANDIDATES}"
 
-hr_log "=== STEP_PI01 complete ==="
+hr_log "=== STEP_PI_B complete ==="
 hr_log "Outputs: ${OUT_BANDPI}"
