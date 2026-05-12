@@ -113,6 +113,15 @@ export RUN_EXTRA_THETA_SCALES=1
 export THETA_SCALES=("5000_1000" "10000_2000" "50000_10000")
 export THETA_SCALE_LABELS=("5kb_1kb" "10kb_2kb" "50kb_10kb")
 
+# ── Window diversity texture (module 04: H_chr, DDI, chi_min) ────────────
+# Primary scale is non-overlapping 50 kb. DDI and chi_min require window
+# independence (MAD over correlated sliding windows is meaningless).
+export DDI_WIN="${DDI_WIN:-50000}"
+export DDI_STEP="${DDI_STEP:-50000}"
+export DDI_MIN_CALLABLE_FRAC="${DDI_MIN_CALLABLE_FRAC:-0.3}"
+export DDI_SMOOTH_WIN="${DDI_SMOOTH_WIN:-11}"
+export DDI_MAD_CONSTANT="${DDI_MAD_CONSTANT:-1.4826}"
+
 # ── ROH parameters ────────────────────────────────────────────────────────
 export NGSFHMM_REPS=10
 export NGSFHMM_SEED_BASE=42
@@ -144,7 +153,11 @@ hr_init_dirs() {
     "$DIR_STATS" "$OUT_TABLES" "$DIR_REPORT" "$DIR_LOGS" \
     "${OUT_HETEROZYGOSITY}/01_saf" "${OUT_HETEROZYGOSITY}/02_sfs" \
     "${OUT_HETEROZYGOSITY}/03_theta" "${OUT_HETEROZYGOSITY}/03_theta/multiscale" \
-    "${OUT_HETEROZYGOSITY}/04_summary"
+    "${OUT_HETEROZYGOSITY}/04_summary" \
+    "${OUTBASE}/11_window_diversity_texture" \
+    "${OUTBASE}/11_window_diversity_texture/logs" \
+    "${OUTBASE}/11_window_diversity_texture/01_per_chrom_H" \
+    "${OUTBASE}/11_window_diversity_texture/02_window_metrics"
 }
 
 # Short-name aliases for any non-MODULE_3 scripts
