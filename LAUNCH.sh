@@ -74,6 +74,14 @@ run_step 4 "Parse ROH, compute FROH, het in/out ROH" \
 run_step 5 "Generate all plots, statistics, and report" \
   bash "${ROOT}/STEP_B01_run_all_plots.sh"
 
+# ── Step 6: Per-chromosome H (module 04) ─────────────────────────────
+run_step 6 "Per-chromosome heterozygosity (H_chr)" \
+  bash "${ROOT}/04_window_diversity_texture/STEP_A05_per_chromosome_heterozygosity.sh"
+
+# ── Step 7: Windowed H + DDI + chi_min (module 04) ──────────────────
+run_step 7 "Window H, DDI, chi_min" \
+  bash "${ROOT}/04_window_diversity_texture/STEP_A06_window_H_and_DDI.sh"
+
 echo ""
 echo "================================================================"
 echo "  ROH MODULE COMPLETE"

@@ -14,6 +14,13 @@ Module [03](03_pi_inversion_karyotype/) adds a separately-run downstream
 analysis: per-inversion **band-level π** (π11 / π22 / π12) for inversion
 candidates with karyotype calls from `catfish-inversion-analysis`.
 
+Module [04](04_window_diversity_texture/) extends the per-sample H
+into **within-genome texture**: per-chromosome H (`H_chr`), the
+diversity dispersion index (`DDI = MAD(H_w)/median(H_w)`), and the
+cohort-relative diversity floor (`χ_min`). Operates on the
+`.thetas.idx` already produced by module 01 — no SAF/SFS
+recomputation.
+
 ## Cohort scope
 
 This repo operates exclusively on the 226-sample pure *C. gariepinus*
@@ -48,9 +55,17 @@ catfish-diversity-analysis/
 │   ├── STEP_PI_F_plot_band_pi_panel.R
 │   └── README.md
 │
+├── 04_window_diversity_texture/       per-sample H texture: H_chr, DDI, χ_min
+│   ├── STEP_A05_per_chromosome_heterozygosity.sh
+│   ├── STEP_A06_window_H_and_DDI.sh
+│   ├── aggregate_per_chrom_H.py
+│   ├── compute_window_metrics.py
+│   └── README.md
+│
 ├── docs/methods/                      methods write-ups
 │   ├── MODULE_3_methods.md            het / ROH / FROH methods
-│   └── theta_pi_scaling.md            tP vs. tP/nSites caveat
+│   ├── theta_pi_scaling.md            tP vs. tP/nSites caveat
+│   └── window_diversity_texture.md    H_chr / DDI / χ_min methods
 │
 └── utils/                             shared helpers (.ibd → BED, parsers)
 ```
@@ -75,6 +90,8 @@ Step map:
 | 3 | [02_roh](02_roh/) | `STEP_A03_run_ngsF_HMM.sh` |
 | 4 | [02_roh](02_roh/) | `STEP_A04_parse_roh_and_het.sh` |
 | 5 | (root) | `STEP_B01_run_all_plots.sh` |
+| 6 | [04_window_diversity_texture](04_window_diversity_texture/) | `STEP_A05_per_chromosome_heterozygosity.sh` |
+| 7 | [04_window_diversity_texture](04_window_diversity_texture/) | `STEP_A06_window_H_and_DDI.sh` |
 
 ## Running the band-π module (independent)
 
@@ -128,3 +145,5 @@ README.
 - [docs/methods/theta_pi_scaling.md](docs/methods/theta_pi_scaling.md)
   — explains why ANGSD's `tP` must be divided by `nSites` to be
   comparable across windows or samples.
+- [docs/methods/window_diversity_texture.md](docs/methods/window_diversity_texture.md)
+  — paper-ready Methods for H_chr, DDI, and χ_min.
