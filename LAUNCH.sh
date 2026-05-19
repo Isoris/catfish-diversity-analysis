@@ -82,6 +82,14 @@ run_step 6 "Per-chromosome heterozygosity (H_chr)" \
 run_step 7 "Window H, DDI, chi_min" \
   bash "${ROOT}/04_window_diversity_texture/STEP_A06_window_H_and_DDI.sh"
 
+# ── Step 8: ROH-derived metrics — N_ROH, S_ROH, F_HOM (module 05) ────
+run_step 8 "ROH-derived metrics (N_ROH, S_ROH, F_HOM)" \
+  bash "${ROOT}/05_roh_metrics_and_genes/STEP_A07_roh_derived_metrics.sh"
+
+# ── Step 9: Genes-in-ROH annotation + recurrence (module 05) ────────
+run_step 9 "Genes-in-ROH annotation (GFF overlap, per-sample, cohort, private)" \
+  bash "${ROOT}/05_roh_metrics_and_genes/STEP_A08_genes_in_roh.sh"
+
 echo ""
 echo "================================================================"
 echo "  ROH MODULE COMPLETE"
