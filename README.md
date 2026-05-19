@@ -21,6 +21,13 @@ cohort-relative diversity floor (`χ_min`). Operates on the
 `.thetas.idx` already produced by module 01 — no SAF/SFS
 recomputation.
 
+Module [05](05_roh_metrics_and_genes/) adds **ROH-derived metrics**
+(`N_ROH`, `S_ROH`, `F_HOM`) and a **genes-in-ROH** annotation against
+a GFF/GFF3, with per-sample views, a cohort recurrence table, and a
+"private-ROH gene" set (analogue of the wild-private-ROH gene table).
+Operates on the per-sample ROH BED + summary produced by module 02 —
+no ngsF-HMM re-run.
+
 ## Cohort scope
 
 This repo operates exclusively on the 226-sample pure *C. gariepinus*
@@ -62,10 +69,18 @@ catfish-diversity-analysis/
 │   ├── compute_window_metrics.py
 │   └── README.md
 │
+├── 05_roh_metrics_and_genes/          N_ROH / S_ROH / F_HOM + genes-in-ROH
+│   ├── STEP_A07_roh_derived_metrics.sh
+│   ├── STEP_A08_genes_in_roh.sh
+│   ├── compute_roh_derived_metrics.py
+│   ├── genes_in_roh.py
+│   └── README.md
+│
 ├── docs/methods/                      methods write-ups
 │   ├── MODULE_3_methods.md            het / ROH / FROH methods
 │   ├── theta_pi_scaling.md            tP vs. tP/nSites caveat
-│   └── window_diversity_texture.md    H_chr / DDI / χ_min methods
+│   ├── window_diversity_texture.md    H_chr / DDI / χ_min methods
+│   └── roh_metrics_and_genes.md       N_ROH / S_ROH / F_HOM / genes-in-ROH
 │
 └── utils/                             shared helpers (.ibd → BED, parsers)
 ```
@@ -92,6 +107,8 @@ Step map:
 | 5 | (root) | `STEP_B01_run_all_plots.sh` |
 | 6 | [04_window_diversity_texture](04_window_diversity_texture/) | `STEP_A05_per_chromosome_heterozygosity.sh` |
 | 7 | [04_window_diversity_texture](04_window_diversity_texture/) | `STEP_A06_window_H_and_DDI.sh` |
+| 8 | [05_roh_metrics_and_genes](05_roh_metrics_and_genes/) | `STEP_A07_roh_derived_metrics.sh` |
+| 9 | [05_roh_metrics_and_genes](05_roh_metrics_and_genes/) | `STEP_A08_genes_in_roh.sh` |
 
 ## Running the band-π module (independent)
 
@@ -147,3 +164,5 @@ README.
   comparable across windows or samples.
 - [docs/methods/window_diversity_texture.md](docs/methods/window_diversity_texture.md)
   — paper-ready Methods for H_chr, DDI, and χ_min.
+- [docs/methods/roh_metrics_and_genes.md](docs/methods/roh_metrics_and_genes.md)
+  — paper-ready Methods for N_ROH, S_ROH, F_HOM, and genes-in-ROH.

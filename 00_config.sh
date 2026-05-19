@@ -122,6 +122,14 @@ export DDI_MIN_CALLABLE_FRAC="${DDI_MIN_CALLABLE_FRAC:-0.3}"
 export DDI_SMOOTH_WIN="${DDI_SMOOTH_WIN:-11}"
 export DDI_MAD_CONSTANT="${DDI_MAD_CONSTANT:-1.4826}"
 
+# ── Gene annotation (module 05: genes-in-ROH) ────────────────────────────
+# GFF/GFF3 file with gene features for the *C. gariepinus* haplotype
+# reference. Optional — STEP_A08 errors if it is unset/missing.
+export GFF_GENE_ANNOT="${GFF_GENE_ANNOT:-${BASE}/00-samples/fClaHyb_Gar_LG.gff3}"
+export GENE_FEATURE_TYPES="${GENE_FEATURE_TYPES:-gene}"
+export GENE_NAME_KEYS="${GENE_NAME_KEYS:-Name,gene_name,gene}"
+export ROH_GENE_MIN_OVERLAP_BP="${ROH_GENE_MIN_OVERLAP_BP:-1}"
+
 # ── ROH parameters ────────────────────────────────────────────────────────
 export NGSFHMM_REPS=10
 export NGSFHMM_SEED_BASE=42
@@ -157,7 +165,10 @@ hr_init_dirs() {
     "${OUTBASE}/11_window_diversity_texture" \
     "${OUTBASE}/11_window_diversity_texture/logs" \
     "${OUTBASE}/11_window_diversity_texture/01_per_chrom_H" \
-    "${OUTBASE}/11_window_diversity_texture/02_window_metrics"
+    "${OUTBASE}/11_window_diversity_texture/02_window_metrics" \
+    "${OUTBASE}/12_roh_metrics_and_genes" \
+    "${OUTBASE}/12_roh_metrics_and_genes/logs" \
+    "${OUTBASE}/12_roh_metrics_and_genes/genes_in_roh"
 }
 
 # Short-name aliases for any non-MODULE_3 scripts
